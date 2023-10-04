@@ -11,6 +11,7 @@ function getComputerChoice() {
 function playRound(playerSelection, computerSelection) {
 
     let winner = '';
+    playerSelection = playerSelection.toLowerCase()
 
     if (playerSelection === computerSelection) {
         winner = `Game tie. You both chose ${computerSelection}`
@@ -28,24 +29,24 @@ function playRound(playerSelection, computerSelection) {
         } else if (computerSelection === 'scissors' && playerSelection === 'paper'){
             winner = "Computer wins: scissors cuts paper";
         } else {
-            alert("Please input a valid game value.")
-            winner = "No round!"
+            alert("Please input a valid game value.");
+            winner = "No round!";
         }
     }
 
     return winner ;
 }
 
-let computerChoice = getComputerChoice();
+const buttons = document.querySelectorAll('button');
+let declareWinner = document.querySelector('.winner');
 
-function game() {
-    for (let i = 0; i <= 5; i++) {
-        let playerChoice = prompt('Enter you choice', '').toLowerCase();
-        console.log(playRound(playerChoice, computerChoice));
-    }
-};
-
-game();
-
-
+buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+        let playerChoice = button.textContent;
+        let computerChoice = getComputerChoice();
+        declareWinner.textContent = '';
+        let gameWinner = playRound(playerChoice, computerChoice);
+        declareWinner.textContent = gameWinner;
+    });
+});
 
