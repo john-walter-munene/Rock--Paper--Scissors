@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock, Paper, Scissors</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+        }
+        .choices {
+            display: flex;
+            justify-content: space-around;
+            position: relative;
+        }
+        .choice {
+            cursor: pointer;
+            position: relative;
+        }
+        .choice img {
+            transition: transform 0.5s ease-in-out;
+        }
+        #result {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+        #score {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+        #winnerImg {
+            display: none; /* Hide the winner image initially */
+        }
+
+        /* Rock animation */
+        .choice.animate-rock img {
+            animation: spinAndCrush 2s ease-in-out forwards;
+        }
+
+        @keyframes spinAndCrush {
+            0% {
+                transform: rotate(0deg) translateY(0);
+            }
+            50% {
+                transform: rotate(720deg) translateY(-20px);
+            }
+            100% {
+                transform: rotate(1440deg) translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="choices">
+            <div class="choice" id="rock">
+                <img src="rock.png" alt="Rock">
+            </div>
+            <div class="choice" id="paper">
+                <img src="paper.png" alt="Paper">
+            </div>
+            <div class="choice" id="scissors">
+                <img src="scissors.png" alt="Scissors">
+            </div>
+        </div>
+        <div id="result"></div>
+        <div id="score">Score: <span id="scoreValue">0</span></div>
+        <img id="winnerImg" src="winner.png" alt="Winner Image">
+    </div>
+
+    <script>
+        const choices = document.querySelectorAll('.choice');
+        const result = document.getElementById('result');
+        const scoreValue = document.getElementById('scoreValue');
+        const winnerImg = document.getElementById('winnerImg');
+        let playerScore = 0;
+        let computerScore = 0;
+        let attempts = 0;
+
+        choices.forEach(choice => choice.addEventListener('click', play));
+
+        function play(e) {
+            const playerChoice = e.target.id;
+            const computerChoice = getComputerChoice();
+            const winner = getWinner(playerChoice, computerChoice);
+
+            displayResult(computerChoice);
+
+            if (winner === 'player') {
+                result.innerHTML = 'You win!';
+                playerScore++;
+                showWinnerImage('You win!');
+            } else if (winner === 'computer') {
+                result.innerHTML = 'Computer wins!';
+                computerScore++;
+                showWinnerImage('Computer wins!');
+            } else {
+                result.innerHTML = "It's a draw!";
+                showWinnerImage("It's a draw!");
+            }
+
+            attempts++;
+
+            if (attempts === 10) {
+                showFinalScore();
+            } else {
+                scoreValue.textContent = `${playerScore} - ${computerScore}`;
+            }
+        }
+
+        function getComputerChoice() {
+            const choices = ['rock', 'paper', 'scissors'];
+            const randomIndex = Math.floor(Math.random() * 3);
+            return choices[randomIndex];
+        }
+
+        function getWinner(player, computer) {
+            if (player === computer) {
+                return 'draw';
+            } else if (
+                (player === 'rock' && computer === 'scissors') ||
+                (player === 'paper' && computer === 'rock') ||
+                (player === 'scissors' && computer === 'paper')
+            ) {
+                return 'player';
+            } else {
+                return 'computer';
+            }
+        }
+
+        function displayResult(computerChoice) {
+            const computerImg = document.querySelector(`#${computerChoice}`);
+            computerImg.classList.add('animate-rock');
+            setTimeout(() => {
+                computerImg.classList.remove('animate-rock');
+            }, 2000);
+        }
+
+        function showWinnerImage(message) {
+            winnerImg.style.display = 'block'; // Show the winner image
+            winnerImg.alt = message;
+        }
+
+        function showFinalScore() {
+            if (playerScore > computerScore) {
+                result.innerHTML = 'You win the game!';
+            } else if (playerScore < computerScore) {
+                result.innerHTML = 'Computer wins the game!';
+            } else {
+                result.innerHTML = "It's a tie!";
+            }
+            scoreValue.textContent = `${playerScore} - ${computerScore}`;
+        }
+    </script>
+</body>
+</html>
