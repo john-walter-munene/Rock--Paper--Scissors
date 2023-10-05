@@ -1,10 +1,12 @@
+// We unda code safi mzee!!
+
 function playRound(playerSelection, computerSelection) {
   // Convert both selections to lowercase for case-insensitive comparison
   const player = playerSelection.toLowerCase();
   const computer = computerSelection.toLowerCase();
 
   if (player === computer) {
-    return "Its a tie!;
+    return "Its a tie!";
   } else if (
     (player === rock && computer === scissors) ||
     (player === scissors && computer === paper) ||
@@ -25,16 +27,15 @@ function getComputerChoice() {
 
 const playerSelection = rock;
 const computerSelection = getComputerChoice();
-console.log(playRound(playerSelection, computerSelection));' >> yora.js
+console.log(playRound(playerSelection, computerSelection));
 
-exit
-echo 'function playRound(playerSelection, computerSelection) {
+function playRound(playerSelection, computerSelection) {
   // Convert both selections to lowercase for case-insensitive comparison
   const player = playerSelection.toLowerCase();
   const computer = computerSelection.toLowerCase();
 
   if (player === computer) {
-    return Its a tie!";
+    return "Its a tie!";
   } else if (
     (player === "rock" && computer === "scissors") ||
     (player === "scissors" && computer === "paper") ||
