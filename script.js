@@ -38,7 +38,7 @@ function playRound(playerSelection, computerSelection) {
 
 const buttons = document.querySelectorAll('button');
 let declareWinner = document.querySelector('.winner');
-let overallWinner = document.querySelector('.overall-winner');
+let overallWinner = document.querySelector('.overall-winner'); 
 
 buttons.forEach((button) => {
     button.addEventListener('click', showWinner);

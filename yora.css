@@ -1,0 +1,60 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.choices {
+    display: flex;
+    justify-content: space-around;
+    position: relative;
+}
+
+.choice {
+    cursor: pointer;
+    position: relative;
+}
+
+.choice img {
+    transition: transform 0.5s ease-in-out;
+}
+
+#result {
+    font-size: 24px;
+    margin-top: 20px;
+}
+
+#score {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+#overallScore {
+    font-size: 18px;
+    margin-top: 10px;
+    display: none; /* Hide the overall score initially */
+}
+
+/* Rock animation */
+.choice.animate-rock img {
+    animation: spinAndCrush 2s ease-in-out forwards;
+}
+
+@keyframes spinAndCrush {
+    0% {
+        transform: rotate(0deg) translateY(0);
+    }
+    50% {
+        transform: rotate(720deg) translateY(-20px);
+    }
+    100% {
+        transform: rotate(1440deg) translateY(0);
+    }
+}
