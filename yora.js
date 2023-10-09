@@ -1,59 +1,107 @@
-// We unda code safi mzee!!
+// Get DOM elements
+const choices = document.querySelectorAll('.choice');
+const result = document.getElementById('result');
+const scoreValue = document.getElementById('scoreValue');
+const overallScoreValue = document.getElementById('overallScoreValue');
+const winnerImg = document.getElementById('winnerImg');
+const overallScoreDiv = document.getElementById('overallScore');
 
-function playRound(playerSelection, computerSelection) {
-  // Convert both selections to lowercase for case-insensitive comparison
-  const player = playerSelection.toLowerCase();
-  const computer = computerSelection.toLowerCase();
+// Initialize scores and attempts
+let playerScore = 0;
+let computerScore = 0;
+let attempts = 0;
+let overallPlayerScore = 0;
+let overallComputerScore = 0;
 
-  if (player === computer) {
-    return "Its a tie!";
-  } else if (
-    (player === rock && computer === scissors) ||
-    (player === scissors && computer === paper) ||
-    (player === paper && computer === rock)
-  ) {
-    return ;
-  } else {
-    return ;
-  }
+// Event listeners for user choices
+choices.forEach(choice => choice.addEventListener('click', play));
+
+function play(e) {
+    if (attempts === 10) {
+        return; // Game has ended, no more plays allowed
+    }
+
+    const playerChoice = e.target.id;
+    const computerChoice = getComputerChoice();
+    const winner = getWinner(playerChoice, computerChoice);
+
+    displayResult(computerChoice);
+
+    if (winner === 'player') {
+        result.innerHTML = 'You win!';
+        playerScore++;
+        showWinnerImage('You win!');
+    } else if (winner === 'computer') {
+        result.innerHTML = 'Computer wins!';
+        computerScore++;
+        showWinnerImage('Computer wins!');
+    } else {
+        result.innerHTML = "It's a draw!";
+        showWinnerImage("It's a draw!");
+    }
+
+    attempts++;
+
+    if (attempts === 10) {
+        showFinalScore();
+    } else {
+        scoreValue.textContent = `${playerScore} - ${computerScore}`;
+    }
 }
 
-// A function to randomly select a choice for the computer
 function getComputerChoice() {
-  const choices = [rock, paper, scissors];
-  const randomIndex = Math.floor(Math.random() * 3);
-  return choices[randomIndex];
+    const choices = ['rock', 'paper', 'scissors'];
+    const randomIndex = Math.floor(Math.random() * choices.length);
+    return choices[randomIndex];
 }
 
-const playerSelection = rock;
-const computerSelection = getComputerChoice();
-console.log(playRound(playerSelection, computerSelection));
-
-function playRound(playerSelection, computerSelection) {
-  // Convert both selections to lowercase for case-insensitive comparison
-  const player = playerSelection.toLowerCase();
-  const computer = computerSelection.toLowerCase();
-
-  if (player === computer) {
-    return "Its a tie!";
-  } else if (
-    (player === "rock" && computer === "scissors") ||
-    (player === "scissors" && computer === "paper") ||
-    (player === "paper" && computer === "rock")
-  ) {
-    return `You win! ${player} beats ${computer}.`;
-  } else {
-    return `You lose! ${computer} beats ${player}.`;
-  }
+function getWinner(player, computer) {
+    if (player === computer) {
+        return 'draw';
+    } else if (
+        (player === 'rock' && computer === 'scissors') ||
+        (player === 'paper' && computer === 'rock') ||
+        (player === 'scissors' && computer === 'paper')
+    ) {
+        return 'player'; // Fixed: Player wins
+    } else {
+        return 'computer';
+    }
 }
 
-// A function to randomly select a choice for the computer
-function getComputerChoice() {
-  const choices = ["rock", "paper", "scissors"];
-  const randomIndex = Math.floor(Math.random() * 3);
-  return choices[randomIndex];
+function displayResult(computerChoice) {
+    const computerImg = document.querySelector(`#${computerChoice}`);
+    computerImg.classList.add('animate-rock');
+    setTimeout(() => {
+        computerImg.classList.remove('animate-rock');
+    }, 2000);
 }
 
-const playerSelection = "rock";
-const computerSelection = getComputerChoice();
-console.log(playRound(playerSelection, computerSelection));
+function showWinnerImage(message) {
+    winnerImg.style.display = 'block'; // Show the winner image
+    winnerImg.alt = message;
+}
+
+function showFinalScore() {
+    if (playerScore > computerScore) {
+        result.innerHTML = 'You win the game!';
+    } else if (playerScore < computerScore) {
+        result.innerHTML = 'Computer wins the game!';
+    } else {
+        result.innerHTML = "It's a tie!";
+    }
+    scoreValue.textContent = `${playerScore} - ${computerScore}`;
+
+    // Update overall score
+    overallPlayerScore += playerScore;
+    overallComputerScore += computerScore;
+    overallScoreValue.textContent = `${overallPlayerScore} - ${overallComputerScore}`;
+
+    // Reset individual round scores
+    playerScore = 0;
+    computerScore = 0;
+    attempts = 0;
+
+    // Show the overall score
+    overallScoreDiv.style.display = 'block';
+}
